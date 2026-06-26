@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Suno Auto Creator",
-  "version": "1.9.2",
+  "version": "2.0.0",
   "description": "Tự động tạo nhạc trên Suno: nhập lyrics + style → 1-click tạo → tự tải về",
   "author": "my-tools26",
   "permissions": [

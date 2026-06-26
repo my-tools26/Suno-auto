@@ -23,9 +23,9 @@
 
     <!-- Tab Navigation -->
     <div class="tab-nav">
-      <button class="tab-btn active" data-tab="create">🎵 Tạo nhạc</button>
-      <button class="tab-btn" data-tab="queue">📋 Hàng đợi <span class="tab-badge hidden" id="queueBadge">0</span></button>
-      <button class="tab-btn" data-tab="history">📜 Lịch sử</button>
+      <button class="tab-btn active" data-tab="create" data-i18n="tabCreate">🎵 Tạo nhạc</button>
+      <button class="tab-btn" data-tab="queue" data-i18n="tabQueue">📋 Hàng đợi <span class="tab-badge hidden" id="queueBadge">0</span></button>
+      <button class="tab-btn" data-tab="history" data-i18n="tabHistory">📜 Lịch sử</button>
     </div>
 
     <!-- ====== TAB: CREATE ====== -->
@@ -165,7 +165,7 @@
       </div>
 
       <!-- Action button -->
-      <button id="btnCreate" class="btn-create">
+      <button id="btnCreate" class="btn-create" data-i18n="btnCreate">
         <span class="btn-icon">🎵</span>
         <span class="btn-text">Tạo nhạc ngay</span>
       </button>
@@ -219,11 +219,13 @@
 
     <!-- Footer -->
     <footer class="footer">
-      Suno Auto Creator v1.9.2 · by my-tools26
+      Suno Auto Creator v2.0 · by my-tools26
     </footer>
   </div>
 
+  <script src="i18n.js"></script>
   <script src="data.js"></script>
   <script src="popup.js"></script>
+  <script>applyLanguage();</script>
 </body>
 </html>
