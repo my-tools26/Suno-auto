@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="app">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">
+        <div class="logo-icon">♪</div>
+        <div>
+          <h1>Suno Auto</h1>
+          <span class="tagline">Tạo nhạc AI chỉ 1 click</span>
+        </div>
+      </div>
+      <div class="credit-badge" title="Tài khoản Premium">⭐ Premium</div>
+    </header>
+
+    <!-- Preset bar -->
+    <div class="preset-bar">
+      <select id="presetSelect">
+        <option value="">💾 Chọn preset...</option>
+      </select>
+      <button id="btnLoadPreset" class="icon-btn" title="Tải preset">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7-7 7 7"/></svg>
+      </button>
+      <button id="btnDeletePreset" class="icon-btn danger" title="Xoá preset">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6"/></svg>
+      </button>
+    </div>
+
+    <!-- Form -->
+    <div class="form">
+      <!-- Style -->
+      <div class="field">
+        <label for="styleInput">
+          <span class="field-icon">🎸</span> Phong cách
+        </label>
+        <input type="text" id="styleInput" placeholder="lo-fi, acoustic ballad, EDM, pop rock...">
+      </div>
+
+      <!-- Title -->
+      <div class="field">
+        <label for="titleInput">
+          <span class="field-icon">✏️</span> Tiêu đề
+          <span class="optional">(tuỳ chọn)</span>
+        </label>
+        <input type="text" id="titleInput" placeholder="Tên bài hát...">
+      </div>
+
+      <!-- Lyrics -->
+      <div class="field">
+        <label for="lyricsInput">
+          <span class="field-icon">🎤</span> Lời bài hát
+        </label>
+        <textarea id="lyricsInput" rows="7" placeholder="[Verse]&#10;Nhập lời bài hát ở đây...&#10;&#10;[Chorus]&#10;Điệp khúc..."></textarea>
+        <div class="char-count"><span id="charCount">0</span> ký tự</div>
+      </div>
+
+      <!-- Save preset row -->
+      <div class="save-preset-row">
+        <input type="text" id="presetName" placeholder="Tên preset mới...">
+        <button id="btnSavePreset" class="btn-save">💾 Lưu</button>
+      </div>
+    </div>
+
+    <!-- Batch options -->
+    <div class="batch-section">
+      <div class="batch-row">
+        <label>
+          <span class="field-icon">🔄</span> Số lượt tạo
+        </label>
+        <div class="batch-controls">
+          <button id="btnMinus" class="batch-btn">−</button>
+          <span id="batchCount" class="batch-number">1</span>
+          <button id="btnPlus" class="batch-btn">+</button>
+        </div>
+      </div>
+      <div class="batch-info" id="batchInfo">1 lượt = 2 bài hát</div>
+    </div>
+
+    <!-- Options -->
+    <div class="options">
+      <label class="toggle">
+        <input type="checkbox" id="randomLyrics">
+        <span class="toggle-slider"></span>
+        <span class="toggle-label">Lời ngẫu nhiên (Suno tự viết)</span>
+      </label>
+      <label class="toggle">
+        <input type="checkbox" id="autoDownload" checked>
+        <span class="toggle-slider"></span>
+        <span class="toggle-label">Tự động tải MP3 khi xong</span>
+      </label>
+    </div>
+
+    <!-- Status -->
+    <div id="status" class="status hidden">
+      <div class="status-dot"></div>
+      <span id="statusText"></span>
+    </div>
+
+    <!-- Action button -->
+    <button id="btnCreate" class="btn-create">
+      <span class="btn-icon">🎵</span>
+      <span class="btn-text">Tạo nhạc ngay</span>
+    </button>
+
+    <!-- Footer -->
+    <footer class="footer">
+      Suno Auto Creator v1.0 — Dùng cá nhân
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

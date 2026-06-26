@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="popup.css">
+  <link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+  <div class="app">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">
+        <div class="logo-icon">♪</div>
+        <div>
+          <h1>Suno Auto</h1>
+          <span class="tagline">Tạo nhạc AI chỉ 1 click</span>
+        </div>
+      </div>
+      <div class="credit-badge" id="creditBadge" title="Bài hát đã tạo hôm nay">
+        🎵 <span id="creditCount">0</span> bài
+      </div>
+    </header>
+
+    <!-- Tab Navigation -->
+    <div class="tab-nav">
+      <button class="tab-btn active" data-tab="create">🎵 Tạo nhạc</button>
+      <button class="tab-btn" data-tab="queue">📋 Hàng đợi <span class="tab-badge hidden" id="queueBadge">0</span></button>
+      <button class="tab-btn" data-tab="history">📜 Lịch sử</button>
+    </div>
+
+    <!-- ====== TAB: CREATE ====== -->
+    <div class="tab-content active" id="tab-create">
+      <!-- Preset bar -->
+      <div class="preset-bar">
+        <select id="presetSelect">
+          <option value="">💾 Preset đã lưu...</option>
+        </select>
+        <button id="btnDeletePreset" class="icon-btn danger" title="Xoá preset">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6"/></svg>
+        </button>
+        <button id="btnExportPresets" class="icon-btn" title="Xuất tất cả preset ra file JSON">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+        </button>
+        <button id="btnImportPresets" class="icon-btn" title="Nhập preset từ file JSON">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+        </button>
+        <input type="file" id="importFile" accept=".json" style="display:none">
+      </div>
+
+      <!-- Form -->
+      <div class="form">
+        <!-- Gợi ý phong cách (thu gọn) -->
+        <div class="collapse">
+          <button class="collapse-head" data-target="helperBody">
+            <span class="field-icon">🎨</span> Gợi ý phong cách
+            <span class="chevron">▾</span>
+          </button>
+          <div class="collapse-body" id="helperBody">
+            <select id="cookbookSelect" class="full-select">
+              <option value="">— Chọn style mẫu chuyên nghiệp —</option>
+            </select>
+            <div class="inline-row" style="margin-top:8px">
+              <input type="text" id="artistInput" placeholder="Giống ca sĩ: Adele, The Weeknd...">
+              <button id="btnArtist" class="btn-save">➜ Style</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="styleInput">
+            <span class="field-icon">🎸</span> Phong cách
+          </label>
+          <input type="text" id="styleInput" placeholder="lo-fi, acoustic ballad, EDM, pop rock...">
+        </div>
+
+        <div class="field">
+          <label for="titleInput">
+            <span class="field-icon">✏️</span> Tiêu đề
+            <span class="optional">(tuỳ chọn)</span>
+          </label>
+          <input type="text" id="titleInput" placeholder="Tên bài hát...">
+        </div>
+
+        <div class="field">
+          <label for="lyricsInput">
+            <span class="field-icon">🎼</span> Lời bài hát
+            <span class="lyric-actions">
+              <button id="btnInstrumental" class="link-btn" title="Tạo nhạc không lời (instrumental)">🎹 Instrumental</button>
+              <button id="btnAutoTag" class="link-btn" title="Tự sắp xếp [Verse]/[Chorus]">✨ Gắn cấu trúc</button>
+            </span>
+          </label>
+          <textarea id="lyricsInput" rows="10" placeholder="[Verse]&#10;Nhập lời bài hát ở đây...&#10;&#10;[Chorus]&#10;Điệp khúc..."></textarea>
+          <div class="char-count"><span id="charCount">0</span> ký tự</div>
+        </div>
+
+        <div class="save-preset-row">
+          <input type="text" id="presetName" placeholder="Lưu thành preset...">
+          <button id="btnSavePreset" class="btn-save">💾 Lưu</button>
+          <button id="btnAddQueue" class="btn-save" title="Thêm cấu hình này vào hàng đợi">➕ Hàng đợi</button>
+        </div>
+      </div>
+
+      <!-- Số lượt tạo -->
+      <div class="batch-section">
+        <div class="batch-row">
+          <label><span class="field-icon">🔄</span> Số lượt tạo</label>
+          <div class="batch-controls">
+            <button id="btnMinus" class="batch-btn">−</button>
+            <span id="batchCount" class="batch-number">1</span>
+            <button id="btnPlus" class="batch-btn">+</button>
+          </div>
+        </div>
+        <div class="batch-info" id="batchInfo">1 lượt = 2 bài hát</div>
+      </div>
+
+      <!-- Tùy chọn chính -->
+      <div class="options">
+        <label class="toggle">
+          <input type="checkbox" id="randomLyrics">
+          <span class="toggle-slider"></span>
+          <span class="toggle-label">Lời ngẫu nhiên (Suno tự viết)</span>
+        </label>
+        <label class="toggle">
+          <input type="checkbox" id="autoDownload" checked>
+          <span class="toggle-slider"></span>
+          <span class="toggle-label">Tự động tải MP3 khi xong</span>
+        </label>
+      </div>
+
+      <!-- Nâng cao (thu gọn) -->
+      <div class="collapse collapse-advanced">
+        <button class="collapse-head" data-target="advancedBody">
+          <span class="field-icon">⚙️</span> Nâng cao
+          <span class="chevron">▾</span>
+        </button>
+        <div class="collapse-body" id="advancedBody">
+          <label class="toggle">
+            <input type="checkbox" id="smartBatch">
+            <span class="toggle-slider"></span>
+            <span class="toggle-label">Smart variations (mỗi lượt đổi nhẹ style)</span>
+          </label>
+          <label class="toggle" style="margin-top:10px">
+            <input type="checkbox" id="useSliders">
+            <span class="toggle-slider"></span>
+            <span class="toggle-label">Điều khiển slider sáng tạo</span>
+          </label>
+          <div class="slider-group" id="sliderGroup">
+            <div class="slider-row">
+              <span class="slider-label">Weirdness <span class="slider-val" id="weirdnessVal">50</span></span>
+              <input type="range" id="weirdness" min="0" max="100" value="50">
+            </div>
+            <div class="slider-row">
+              <span class="slider-label">Style Influence <span class="slider-val" id="styleInfluenceVal">50</span></span>
+              <input type="range" id="styleInfluence" min="0" max="100" value="50">
+            </div>
+            <div class="slider-hint">Trái = an toàn/thoáng · Phải = chaos/bám sát style</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Status -->
+      <div id="status" class="status hidden">
+        <div class="status-dot"></div>
+        <span id="statusText"></span>
+      </div>
+
+      <!-- Action button -->
+      <button id="btnCreate" class="btn-create">
+        <span class="btn-icon">🎵</span>
+        <span class="btn-text">Tạo nhạc ngay</span>
+      </button>
+    </div>
+
+    <!-- ====== TAB: QUEUE ====== -->
+    <div class="tab-content" id="tab-queue">
+      <div class="section-header">
+        <span>Chạy tuần tự, nghỉ 2-4 phút giữa mỗi mục</span>
+        <div class="section-actions">
+          <button id="btnClearQueue" class="btn-small danger">🗑 Xoá</button>
+          <button id="btnRunQueue" class="btn-small primary">▶ Chạy</button>
+        </div>
+      </div>
+      <div id="queueList" class="item-list">
+        <div class="empty-state" id="queueEmpty">Chưa có mục nào.<br>Vào tab Tạo nhạc → điền form → bấm "Thêm vào hàng đợi"</div>
+      </div>
+    </div>
+
+    <!-- ====== TAB: HISTORY ====== -->
+    <div class="tab-content" id="tab-history">
+      <div class="section-header">
+        <span>Thống kê</span>
+        <button id="btnClearHistory" class="btn-small danger">🗑 Xoá lịch sử</button>
+      </div>
+      <div class="credits-summary">
+        <div class="credits-item">
+          <span class="credits-label">Hôm nay</span>
+          <span class="credits-value" id="creditsToday">0</span>
+        </div>
+        <div class="credits-item">
+          <span class="credits-label">Tổng cộng</span>
+          <span class="credits-value" id="creditsTotal">0</span>
+        </div>
+        <div class="credits-item">
+          <span class="credits-label">Credits</span>
+          <span class="credits-value" id="creditsEstimate">~0</span>
+        </div>
+      </div>
+      <div class="history-filter">
+        <span class="filter-label">Lọc:</span>
+        <button class="filter-btn active" data-filter="0">Tất cả</button>
+        <button class="filter-btn" data-filter="3">★ 3+</button>
+        <button class="filter-btn" data-filter="4">★ 4+</button>
+        <button class="filter-btn" data-filter="5">★ 5</button>
+      </div>
+      <div id="historyList" class="item-list">
+        <div class="empty-state" id="historyEmpty">Chưa có bài hát nào được tạo.</div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      Suno Auto Creator v1.9.2 · by my-tools26
+    </footer>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
